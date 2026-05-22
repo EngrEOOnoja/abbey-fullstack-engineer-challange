@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Mail, Lock, Code, Terminal } from 'lucide-react';
+import { User, Mail, Lock, Code, Terminal, ShieldCheck } from 'lucide-react';
 
 interface AuthPageProps {
   onAuthSuccess: (token: string, user: any) => void;
@@ -9,6 +9,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -19,6 +20,13 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Client-side password confirmation check (signup only)
+    if (!isLogin && password !== confirmPassword) {
+      setError('Passwords do not match. Please re-enter password.');
+      return;
+    }
+
     setLoading(true);
 
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
@@ -101,7 +109,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
           marginBottom: '28px'
         }}>
           <button
-            onClick={() => { setIsLogin(true); setError(null); }}
+            onClick={() => { setIsLogin(true); setError(null); setConfirmPassword(''); }}
             style={{
               flex: 1,
               background: isLogin ? 'hsl(var(--bg-surface-hover))' : 'transparent',
@@ -118,7 +126,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
             Sign In
           </button>
           <button
-            onClick={() => { setIsLogin(false); setError(null); }}
+            onClick={() => { setIsLogin(false); setError(null); setConfirmPassword(''); }}
             style={{
               flex: 1,
               background: !isLogin ? 'hsl(var(--bg-surface-hover))' : 'transparent',
@@ -151,7 +159,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
             alignItems: 'center',
             gap: '8px'
           }}>
-            <span style={{ fontWeight: 'bold' }}>error_code_01:</span> {error}
+            {error}
           </div>
         )}
 
@@ -219,7 +227,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
                 type={isLogin ? 'text' : 'email'}
                 required
                 className="form-input"
-                placeholder={isLogin ? 'email@example.com or username' : 'email@example.com'}
+                placeholder={isLogin ? 'email@john123.com or username' : 'email@john123.com'}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={{ paddingLeft: '40px' }}
@@ -227,7 +235,7 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
             </div>
           </div>
 
-          <div className="form-group" style={{ marginBottom: '28px' }}>
+          <div className="form-group" style={{ marginBottom: isLogin ? '28px' : '0' }}>
             <label className="form-label">Password</label>
             <div style={{ position: 'relative' }}>
               <Lock size={16} style={{
@@ -248,6 +256,30 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
               />
             </div>
           </div>
+
+          {!isLogin && (
+            <div className="form-group" style={{ marginBottom: '28px' }}>
+              <label className="form-label">Confirm Password</label>
+              <div style={{ position: 'relative' }}>
+                <ShieldCheck size={16} style={{
+                  position: 'absolute',
+                  left: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'hsl(var(--text-muted))'
+                }} />
+                <input
+                  type="password"
+                  required
+                  className="form-input"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  style={{ paddingLeft: '40px' }}
+                />
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"

@@ -2,11 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import { getDb } from './db';
-import authRouter from './routes/auth';
-import usersRouter from './routes/users';
-import relationshipsRouter from './routes/relationships';
-import postsRouter from './routes/posts';
+import { getDb } from './shared/db';
+
+// Import self-contained modules (each can be extracted to a standalone service)
+import { authRouter } from './modules/auth';
+import { usersRouter } from './modules/users';
+import { relationshipsRouter } from './modules/relationships';
+import { postsRouter } from './modules/posts';
 
 // Initialize configuration
 dotenv.config();
@@ -24,7 +26,15 @@ app.use(cors({
 // Body parsing
 app.use(express.json());
 
-// Bind routes
+// ──────────────────────────────────────────────
+// Mount self-contained modules
+// Each module owns its own controller → service → repository layers.
+// To convert any module to a microservice:
+//   1. Move the module folder into its own project
+//   2. Give it its own Express server entrypoint
+//   3. Replace shared/db with its own DB connection
+//   4. Replace API-route mounts with HTTP/gRPC calls
+// ──────────────────────────────────────────────
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/relationships', relationshipsRouter);

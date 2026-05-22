@@ -7,7 +7,7 @@ let db: Database | null = null;
 export async function getDb(): Promise<Database> {
   if (db) return db;
 
-  const dbPath = path.join(__dirname, '..', 'database.sqlite');
+  const dbPath = path.join(__dirname, '..', '..', 'database.sqlite');
   
   db = await open({
     filename: dbPath,
