@@ -79,8 +79,38 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Mobile Top Header (only visible on mobile) */}
+      <header className="mobile-top-header show-on-mobile">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Terminal size={14} />
+          </div>
+          <h1 style={{ fontSize: '1rem', fontWeight: 800 }}>
+            DevSphere
+          </h1>
+        </div>
+
+        <button
+          onClick={handleLogout}
+          className="btn btn-danger btn-sm"
+          style={{ padding: '6px 10px', fontSize: '0.75rem', gap: '4px' }}
+        >
+          <LogOut size={12} />
+          Sign Out
+        </button>
+      </header>
+
       {/* Sleek Sidebar Navigation */}
-      <aside style={{
+      <aside className="hide-on-mobile" style={{
         background: 'rgba(10, 15, 30, 0.7)',
         backdropFilter: 'blur(20px)',
         borderRight: '1px solid hsl(var(--border-color))',
@@ -216,6 +246,33 @@ export default function App() {
       }}>
         {renderActiveView()}
       </main>
+
+      {/* Mobile Bottom Navigation Bar (only visible on mobile) */}
+      <nav className="mobile-bottom-nav show-on-mobile">
+        <button
+          onClick={() => { setCurrentView('feed'); setSelectedUserId(null); }}
+          className={`mobile-nav-item ${currentView === 'feed' ? 'active' : ''}`}
+        >
+          <Sparkles size={20} />
+          <span>Feed Hub</span>
+        </button>
+
+        <button
+          onClick={() => { setCurrentView('network'); setSelectedUserId(null); }}
+          className={`mobile-nav-item ${currentView === 'network' ? 'active' : ''}`}
+        >
+          <Users size={20} />
+          <span>Directory</span>
+        </button>
+
+        <button
+          onClick={() => { setCurrentView('profile'); setSelectedUserId(currentUser.id); }}
+          className={`mobile-nav-item ${(currentView === 'profile' && selectedUserId === currentUser.id) ? 'active' : ''}`}
+        >
+          <User size={20} />
+          <span>My Profile</span>
+        </button>
+      </nav>
     </div>
   );
 }

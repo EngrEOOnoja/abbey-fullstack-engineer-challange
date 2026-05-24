@@ -74,7 +74,7 @@ export function NetworkView({ token, onNavigateToUser }: NetworkViewProps) {
   };
 
   return (
-    <div style={{ padding: '32px', maxWidth: '900px', margin: '0 auto', width: '100%' }}>
+    <div className="network-container">
       {/* View Header */}
       <div style={{ marginBottom: '32px' }} className="animate-fade-in">
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>

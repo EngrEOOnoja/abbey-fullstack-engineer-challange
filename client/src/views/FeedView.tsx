@@ -94,7 +94,7 @@ export function FeedView({ token, onNavigateToUser }: FeedViewProps) {
   };
 
   return (
-    <div style={{ padding: '32px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+    <div className="view-container">
       {/* Welcome Title */}
       <div style={{ marginBottom: '32px' }} className="animate-fade-in">
         <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -162,13 +162,10 @@ export function FeedView({ token, onNavigateToUser }: FeedViewProps) {
               />
               
               {showProjectFields && (
-                <div style={{
+                <div className="responsive-grid-2" style={{
                   marginTop: '16px',
                   paddingTop: '16px',
                   borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '12px',
                   animation: 'fadeIn 0.2s'
                 }}>
                   <input
@@ -194,6 +191,8 @@ export function FeedView({ token, onNavigateToUser }: FeedViewProps) {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px',
                 marginTop: '16px',
                 paddingTop: '12px',
                 borderTop: '1px solid rgba(255, 255, 255, 0.05)'

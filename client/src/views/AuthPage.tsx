@@ -58,20 +58,8 @@ export function AuthPage({ onAuthSuccess }: AuthPageProps) {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      background: 'radial-gradient(circle at top right, rgba(139, 92, 246, 0.12), transparent), radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.1), transparent)',
-      padding: '24px'
-    }}>
-      <div className="glass-panel animate-fade-in" style={{
-        width: '100%',
-        maxWidth: '460px',
-        padding: '40px',
-        border: '1px solid rgba(255, 255, 255, 0.08)'
-      }}>
+    <div className="auth-container">
+      <div className="glass-panel animate-fade-in auth-card">
         {/* Header Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{

@@ -1,0 +1,308 @@
+{
+  "info": {
+    "_postman_id": "a90df165-3775-4e97-8118-ef9bb8f7482b",
+    "name": "DevSphere API Testing Collection",
+    "description": "Automated testing collection for DevSphere (social network for developers). Includes auto-token saving logic.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. GET Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{API_URL}}/health",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. POST Signup (Alice)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"Alice Smith\"\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/auth/signup",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. POST Signup (Bob)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"bob\",\n  \"email\": \"bob@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"Bob Jones\"\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/auth/signup",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "signup"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. POST Login (Alice)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const res = pm.response.json();",
+              "if (res.token) {",
+              "    pm.collectionVariables.set(\"token\", res.token);",
+              "    console.log(\"Token auto-saved to collection variable: \" + res.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"emailOrUsername\": \"alice\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/auth/login",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. GET List All Developers",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{API_URL}}/api/users",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. PUT Update Profile (Alice)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice Smith\",\n  \"bio\": \"Full-stack developer who loves TypeScript\",\n  \"skills\": \"React, TypeScript, Node.js\",\n  \"avatar_url\": \"https://example.com/avatar.png\",\n  \"github_url\": \"https://github.com/alice\"\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/users/profile",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "users",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. POST Follow Bob",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"followedId\": 2\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/relationships/follow",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "relationships",
+            "follow"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. POST Create Project Update",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"content\": \"Just launched DevSphere! Integrated SQLite with Node.js and TypeScript. Super fast setup!\",\n  \"projectName\": \"DevSphere\",\n  \"projectLink\": \"https://github.com/alice/devsphere\"\n}"
+        },
+        "url": {
+          "raw": "{{API_URL}}/api/posts",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "9. GET Activity Feed",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{API_URL}}/api/posts/feed",
+          "host": [
+            "{{API_URL}}"
+          ],
+          "path": [
+            "api",
+            "posts",
+            "feed"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "API_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

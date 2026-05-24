@@ -175,17 +175,17 @@ export function ProfileView({
   if (!profile) return null;
 
   return (
-    <div style={{ padding: '32px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
+    <div className="view-container">
       {/* Back Button */}
       <button onClick={onBackToFeed} className="btn btn-secondary btn-sm" style={{ marginBottom: '24px', gap: '6px' }}>
         <ArrowLeft size={14} /> Back to Feed
       </button>
 
       {/* Main Profile Info Card */}
-      <div className="glass-panel animate-fade-in" style={{ padding: '32px', marginBottom: '32px', position: 'relative' }}>
+      <div className="glass-panel animate-fade-in profile-card">
         
         {/* Profile Action Buttons */}
-        <div style={{ position: 'absolute', top: '32px', right: '32px' }}>
+        <div className="profile-action-buttons-container">
           {isOwnProfile ? (
             <button
               onClick={() => setIsEditing(!isEditing)}
